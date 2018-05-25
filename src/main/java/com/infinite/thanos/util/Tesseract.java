@@ -1,6 +1,7 @@
 package com.infinite.thanos.util;
 
 import com.infinite.thanos.model.Individual;
+import com.infinite.thanos.model.Person;
 import com.infinite.thanos.model.Species;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ public class Tesseract {
         List<Species> speciess = new ArrayList<Species>();
         Species demo = new Species();
         List<Individual> individuals = new ArrayList<Individual>();
-        Individual individual = new Individual();
+        Individual individual = new Person();
         individuals.add(individual);
         demo.setIndividuals(individuals);
         speciess.add(demo);
