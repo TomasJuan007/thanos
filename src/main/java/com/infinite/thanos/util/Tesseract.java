@@ -6,16 +6,22 @@ import com.infinite.thanos.model.Species;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Tesseract {
-    public static List<Species> getAllSpecies() {
-        List<Species> speciess = new ArrayList<Species>();
+    private static Map<String, Species> orbContainer = new ConcurrentHashMap<>();
+
+    public static Map<String, Species> getAllSpecies() {
         Species demo = new Species();
         List<Individual> individuals = new ArrayList<Individual>();
-        Individual individual = new Person();
+        Person individual = new Person();
+        individual.setFirstName("Kronas");
+        individual.setLastName("Kork");
         individuals.add(individual);
         demo.setIndividuals(individuals);
-        speciess.add(demo);
-        return speciess;
+        orbContainer.put(UUID.randomUUID().toString(), demo);
+        return orbContainer;
     }
 }
