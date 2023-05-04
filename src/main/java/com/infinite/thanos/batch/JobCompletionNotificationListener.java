@@ -1,6 +1,6 @@
 package com.infinite.thanos.batch;
 
-import com.infinite.thanos.model.Person;
+import com.infinite.thanos.model.Human;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.BatchStatus;
@@ -24,14 +24,15 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
 
     @Override
     public void afterJob(JobExecution jobExecution) {
-        if(jobExecution.getStatus() == BatchStatus.COMPLETED) {
+        if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
 
-            jdbcTemplate.query("SELECT first_name, last_name FROM people",
-                    (rs, row) -> new Person(
-                            rs.getString(1),
-                            rs.getString(2))
-            ).forEach(person -> log.info("Found <" + person + "> in the database."));
+            jdbcTemplate.query("SELECT identifier, first_name, last_name FROM people",
+                    (rs, row) -> new Human(
+                            rs.getLong(1),
+                            rs.getString(2),
+                            rs.getString(3))
+            ).forEach(human -> log.info("Found individual[" + human + "] in the database."));
         }
     }
 }

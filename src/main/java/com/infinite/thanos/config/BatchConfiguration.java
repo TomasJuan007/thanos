@@ -1,8 +1,8 @@
 package com.infinite.thanos.config;
 
 import com.infinite.thanos.batch.JobCompletionNotificationListener;
-import com.infinite.thanos.batch.PersonItemProcessor;
-import com.infinite.thanos.model.Person;
+import com.infinite.thanos.batch.HumanItemProcessor;
+import com.infinite.thanos.model.Human;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -33,28 +33,28 @@ public class BatchConfiguration {
     public StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public FlatFileItemReader<Person> reader() {
-        return new FlatFileItemReaderBuilder<Person>()
-                .name("personItemReader")
+    public FlatFileItemReader<Human> reader() {
+        return new FlatFileItemReaderBuilder<Human>()
+                .name("humanItemReader")
                 .resource(new ClassPathResource("sample-data.csv"))
                 .delimited()
                 .names(new String[]{"firstName", "lastName"})
-                .fieldSetMapper(new BeanWrapperFieldSetMapper<Person>() {{
-                    setTargetType(Person.class);
+                .fieldSetMapper(new BeanWrapperFieldSetMapper<Human>() {{
+                    setTargetType(Human.class);
                 }})
                 .build();
     }
 
     @Bean
-    public PersonItemProcessor processor() {
-        return new PersonItemProcessor();
+    public HumanItemProcessor processor() {
+        return new HumanItemProcessor();
     }
 
     @Bean
-    public JdbcBatchItemWriter<Person> writer(DataSource dataSource) {
-        return new JdbcBatchItemWriterBuilder<Person>()
+    public JdbcBatchItemWriter<Human> writer(DataSource dataSource) {
+        return new JdbcBatchItemWriterBuilder<Human>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("INSERT INTO people (first_name, last_name) VALUES (:firstName, :lastName)")
+                .sql("INSERT INTO people (identifier, first_name, last_name) VALUES (:identifier, :firstName, :lastName)")
                 .dataSource(dataSource)
                 .build();
     }
@@ -70,9 +70,9 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step step1(JdbcBatchItemWriter<Person> writer) {
-        return stepBuilderFactory.get("step1")
-                .<Person, Person> chunk(10)
+    public Step step(JdbcBatchItemWriter<Human> writer) {
+        return stepBuilderFactory.get("step")
+                .<Human, Human>chunk(10)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer)
