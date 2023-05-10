@@ -8,3 +8,4 @@ Reference:
 
 ###### Tesseract
 ###### Orb
+###### Scepter

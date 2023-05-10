@@ -1,7 +1,6 @@
 package com.infinite.thanos.model;
 
-public class Human implements Individual {
-    private Long identifier;
+public class Human extends AbstractIndividual {
     private String firstName;
     private String lastName;
 
@@ -9,19 +8,9 @@ public class Human implements Individual {
     }
 
     public Human(Long identifier, String firstName, String lastName) {
-        this.identifier = identifier;
+        super.setIdentifier(identifier);
         this.firstName = firstName;
         this.lastName = lastName;
-    }
-
-    @Override
-    public Long getIdentifier() {
-        return identifier;
-    }
-
-    @Override
-    public void setIdentifier(Long identifier) {
-        this.identifier = identifier;
     }
 
     public void setFirstName(String firstName) {
@@ -42,6 +31,6 @@ public class Human implements Individual {
 
     @Override
     public String toString() {
-        return "Human<identifier: " + identifier + ", firstName: " + firstName + ", lastName: " + lastName + ">";
+        return "Human<identifier: " + super.getIdentifier() + ", firstName: " + firstName + ", lastName: " + lastName + ">";
     }
 }

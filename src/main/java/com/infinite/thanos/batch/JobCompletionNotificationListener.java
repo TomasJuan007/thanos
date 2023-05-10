@@ -1,5 +1,6 @@
 package com.infinite.thanos.batch;
 
+import com.infinite.thanos.model.Dog;
 import com.infinite.thanos.model.Human;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +28,18 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
 
-            jdbcTemplate.query("SELECT identifier, first_name, last_name FROM people",
+            jdbcTemplate.query("SELECT identifier, first_name, last_name FROM human",
                     (rs, row) -> new Human(
                             rs.getLong(1),
                             rs.getString(2),
                             rs.getString(3))
             ).forEach(human -> log.info("Found individual[" + human + "] in the database."));
+
+            jdbcTemplate.query("SELECT identifier, nickname FROM dog",
+                    (rs, row) -> new Dog(
+                            rs.getLong(1),
+                            rs.getString(2))
+            ).forEach(dog -> log.info("Found individual[" + dog + "] in the database."));
         }
     }
 }
